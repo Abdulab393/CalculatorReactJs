@@ -23,7 +23,7 @@ const Calculator = () => {
 
     if (currentValue !== "0") {
       setPreviousValue(currentValue);
-      setCurrentValue("0");
+      setCurrentValue("");
     }
 
     setOperator(op);
