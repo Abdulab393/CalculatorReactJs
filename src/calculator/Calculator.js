@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import './Calculator.css'; 
+
+import React, { useState } from "react";
+import "./Calculator.css";
 
 const Calculator = () => {
-  const [currentValue, setCurrentValue] = useState('0');
-  const [previousValue, setPreviousValue] = useState(null);
+  const [currentValue, setCurrentValue] = useState("0");
+  const [previousValue, setPreviousValue] = useState("");
   const [operator, setOperator] = useState(null);
 
   const handleNumberClick = (num) => {
-    if (currentValue === '0' && num !== '.') {
+    if (currentValue === "0" && num !== ".") {
       setCurrentValue(String(num));
     } else {
       setCurrentValue(currentValue + num);
@@ -15,19 +16,22 @@ const Calculator = () => {
   };
 
   const handleOperatorClick = (op) => {
-    if (op === '±') {
+    if (op === "±") {
       setCurrentValue((prev) => (parseFloat(prev) * -1).toString());
       return;
     }
 
+    if (currentValue !== "0") {
+      setPreviousValue(currentValue);
+      setCurrentValue("0");
+    }
+
     setOperator(op);
-    setPreviousValue(currentValue);
-    setCurrentValue('0');
   };
 
   const handleClear = () => {
-    setCurrentValue('0');
-    setPreviousValue(null);
+    setCurrentValue("0");
+    setPreviousValue("");
     setOperator(null);
   };
 
@@ -38,16 +42,16 @@ const Calculator = () => {
     let result;
 
     switch (operator) {
-      case '+':
+      case "+":
         result = prev + current;
         break;
-      case '-':
+      case "-":
         result = prev - current;
         break;
-      case 'x':
+      case "x":
         result = prev * current;
         break;
-      case '÷':
+      case "÷":
         result = prev / current;
         break;
       default:
@@ -55,7 +59,7 @@ const Calculator = () => {
     }
 
     setCurrentValue(result.toString());
-    setPreviousValue(null);
+    setPreviousValue("");
     setOperator(null);
   };
 
@@ -73,30 +77,50 @@ const Calculator = () => {
 
   return (
     <div className="calculator">
-      <Display value={currentValue} />
+      <Display value={`${previousValue} ${operator ? operator : ""} ${currentValue}`} />
       <div className="buttons">
         <Button onClick={handleClear} label="C" />
-        <Button onClick={() => handleOperatorClick('±')} label="±"  />
+        <Button onClick={() => handleOperatorClick("±")} label="±" />
         <Button onClick={handlePercentage} label="%" />
-        <Button onClick={() => handleOperatorClick('÷')} label="÷" className="sameColor" />
+        <Button
+          onClick={() => handleOperatorClick("÷")}
+          label="÷"
+          className="sameColor"
+        />
 
-        <Button onClick={() => handleNumberClick('7')} label="7" />
-        <Button onClick={() => handleNumberClick('8')} label="8" />
-        <Button onClick={() => handleNumberClick('9')} label="9" />
-        <Button onClick={() => handleOperatorClick('x')} label="x" className="sameColor" />
+        <Button onClick={() => handleNumberClick("7")} label="7" />
+        <Button onClick={() => handleNumberClick("8")} label="8" />
+        <Button onClick={() => handleNumberClick("9")} label="9" />
+        <Button
+          onClick={() => handleOperatorClick("x")}
+          label="x"
+          className="sameColor"
+        />
 
-        <Button onClick={() => handleNumberClick('4')} label="4" />
-        <Button onClick={() => handleNumberClick('5')} label="5" />
-        <Button onClick={() => handleNumberClick('6')} label="6" />
-        <Button onClick={() => handleOperatorClick('-')} label="-" className="sameColor" />
+        <Button onClick={() => handleNumberClick("4")} label="4" />
+        <Button onClick={() => handleNumberClick("5")} label="5" />
+        <Button onClick={() => handleNumberClick("6")} label="6" />
+        <Button
+          onClick={() => handleOperatorClick("-")}
+          label="-"
+          className="sameColor"
+        />
 
-        <Button onClick={() => handleNumberClick('1')} label="1" />
-        <Button onClick={() => handleNumberClick('2')} label="2" />
-        <Button onClick={() => handleNumberClick('3')} label="3" />
-        <Button onClick={() => handleOperatorClick('+')} label="+" className="sameColor" />
+        <Button onClick={() => handleNumberClick("1")} label="1" />
+        <Button onClick={() => handleNumberClick("2")} label="2" />
+        <Button onClick={() => handleNumberClick("3")} label="3" />
+        <Button
+          onClick={() => handleOperatorClick("+")}
+          label="+"
+          className="sameColor"
+        />
 
-        <Button onClick={() => handleNumberClick('0')} label="0" className="zero" />
-        <Button onClick={() => handleNumberClick('.')} label="." />
+        <Button
+          onClick={() => handleNumberClick("0")}
+          label="0"
+          className="zero"
+        />
+        <Button onClick={() => handleNumberClick(".")} label="." />
         <Button onClick={handleEquals} label="=" className="sameColor" />
       </div>
     </div>
